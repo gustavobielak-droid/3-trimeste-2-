@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparador de Tokens</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="container">
+    <header>
+      <h1>Comparador de Tokens</h1>
+      <p>Compare o consumo de tokens de diferentes solicitações à IA.</p>
+    </header>
+
+    <section class="teste">
+      <h2>Teste 1 — Prompt curto</h2>
+
+      <label for="prompt1">Solicitação utilizada:</label>
+      <textarea id="prompt1" readonly>Explique o que é inteligência artificial.</textarea>
+
+      <label for="entrada1">Tokens de entrada:</label>
+      <input type="number" id="entrada1" min="0" placeholder="Digite o resultado">
+
+      <label for="saida1">Tokens de saída:</label>
+      <input type="number" id="saida1" min="0" placeholder="Digite o resultado">
+    </section>
+
+    <section class="teste">
+      <h2>Teste 2 — Prompt detalhado</h2>
+
+      <label for="prompt2">Solicitação utilizada:</label>
+      <textarea id="prompt2" readonly>Explique o que é inteligência artificial, como ela funciona, quais são suas principais aplicações na saúde, educação e indústria, apresente exemplos práticos, vantagens, desvantagens e possíveis impactos no futuro. Organize a resposta em tópicos e utilize linguagem simples para iniciantes.</textarea>
+
+      <label for="entrada2">Tokens de entrada:</label>
+      <input type="number" id="entrada2" min="0" placeholder="Digite o resultado">
+
+      <label for="saida2">Tokens de saída:</label>
+      <input type="number" id="saida2" min="0" placeholder="Digite o resultado">
+    </section>
+
+    <button type="button" onclick="comparar()">
+      Comparar resultados
+    </button>
+
+    <section class="resultados">
+      <h2>Resultados da comparação</h2>
+
+      <div class="cards">
+        <article class="card">
+          <h3>Prompt curto</h3>
+          <p>Entrada: <strong id="resEntrada1">—</strong></p>
+          <p>Saída: <strong id="resSaida1">—</strong></p>
+          <p>Total: <strong id="total1">—</strong></p>
+        </article>
+
+        <article class="card">
+          <h3>Prompt detalhado</h3>
+          <p>Entrada: <strong id="resEntrada2">—</strong></p>
+          <p>Saída: <strong id="resSaida2">—</strong></p>
+          <p>Total: <strong id="total2">—</strong></p>
+        </article>
+      </div>
+
+      <div class="conclusao">
+        <h3>Conclusão</h3>
+        <p id="conclusao">
+          Preencha os resultados dos dois testes para comparar o consumo.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Atividade educativa — Consumo de tokens em modelos de IA.</p>
+    </footer>
+  </main>
+
+  <script>
+    function comparar() {
+      const campos = [
+        "entrada1", "saida1", "entrada2", "saida2"
+      ];
+
+      const valores = {};
+
+      for (const id of campos) {
+        const campo = document.getElementById(id);
+
+        if (campo.value.trim() === "" ||
+            !Number.isFinite(Number(campo.value)) ||
+            Number(campo.value) < 0) {
+          alert("Preencha todos os campos com valores válidos.");
+          campo.focus();
+          return;
+        }
+
+        valores[id] = Number(campo.value);
+      }
+
+      const total1 = valores.entrada1 + valores.saida1;
+      const total2 = valores.entrada2 + valores.saida2;
+
+      document.getElementById("resEntrada1").textContent = valores.entrada1;
+      document.getElementById("resSaida1").textContent = valores.saida1;
+      document.getElementById("total1").textContent = total1;
+
+      document.getElementById("resEntrada2").textContent = valores.entrada2;
+      document.getElementById("resSaida2").textContent = valores.saida2;
+      document.getElementById("total2").textContent = total2;
+
+      const conclusao = document.getElementById("conclusao");
+
+      if (total1 > total2) {
+        conclusao.textContent =
+          `O prompt curto consumiu mais tokens: ${total1 - total2} a mais.`;
+      } else if (total2 > total1) {
+        conclusao.textContent =
+          `O prompt detalhado consumiu mais tokens: ${total2 - total1} a mais.`;
+      } else {
+        conclusao.textContent =
+          "Os dois prompts consumiram a mesma quantidade de tokens.";
+      }
+    }
+  </script>
+
+</body>
+</html>
